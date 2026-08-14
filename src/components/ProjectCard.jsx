@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 const accents = {
   signal: "text-signal border-signal",
   violet: "text-violet border-violet",
+  amber: "text-amber border-amber",
 };
 
 export default function ProjectCard({ project }) {
