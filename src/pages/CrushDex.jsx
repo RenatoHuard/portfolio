@@ -1,0 +1,68 @@
+import { crushdex } from "../data/projects";
+
+export default function CrushDex() {
+  return (
+    <div className="mx-auto max-w-4xl px-6 py-20">
+      <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-muted">
+        <span className="border border-amber px-2 py-0.5 text-amber">{crushdex.tag}</span>
+        <span>{crushdex.status}</span>
+      </div>
+
+      <h1 className="mt-4 font-display text-4xl font-semibold text-text md:text-5xl">
+        {crushdex.title}
+      </h1>
+
+      <div className="mt-8 space-y-4 text-base leading-relaxed text-muted">
+        {crushdex.description.map((paragraph, i) => (
+          <p key={i}>{paragraph}</p>
+        ))}
+      </div>
+
+      <div className="mt-10">
+        <p className="font-mono text-xs uppercase tracking-widest text-violet">Stack</p>
+        <ul className="mt-3 flex flex-wrap gap-2">
+          {crushdex.stack.map((tech) => (
+            <li key={tech} className="border border-line px-3 py-1 font-mono text-xs uppercase tracking-wider text-text">
+              {tech}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mt-12 hud-corners border border-line bg-surface p-8">
+        <div className="corner-tl" />
+        <div className="corner-br" />
+        <p className="font-mono text-xs uppercase tracking-widest text-signal">Download</p>
+        <h2 className="mt-2 font-display text-2xl font-semibold text-text">
+          Baixar CrushDex (Android)
+        </h2>
+        <p className="mt-2 max-w-md text-sm text-muted">
+          O link sempre aponta para a versão mais recente do APK publicada no
+          armazenamento do projeto.
+        </p>
+        <a
+          href={crushdex.apkUrl}
+          className="mt-6 inline-flex items-center gap-2 border border-signal bg-signal px-6 py-3 font-mono text-xs uppercase tracking-widest text-bg transition-opacity hover:opacity-90"
+        >
+          Baixar APK <span aria-hidden>↓</span>
+        </a>
+        <p className="mt-3 font-mono text-[11px] text-muted">
+          Requer permissão para instalar apps de fontes desconhecidas no Android.
+        </p>
+      </div>
+
+      {crushdex.repo && (
+        <div className="mt-6">
+          <a
+            href={crushdex.repo}
+            target="_blank"
+            rel="noreferrer"
+            className="font-mono text-xs uppercase tracking-widest text-muted hover:text-signal"
+          >
+            Ver repositório ↗
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}
