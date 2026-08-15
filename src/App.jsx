@@ -1,12 +1,17 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import CursorGlow from "./components/CursorGlow";
+import WhatsAppButton from "./components/WhatsAppButton";
 import Home from "./pages/Home";
 import Portfolio from "./pages/Portfolio";
 import ProjectDetail from "./pages/ProjectDetail";
 import CrushDex from "./pages/CrushDex";
+import Login from "./pages/admin/Login";
+import Dashboard from "./pages/admin/Dashboard";
+import ProjectEdit from "./pages/admin/ProjectEdit";
+import ProtectedRoute from "./components/admin/ProtectedRoute";
 
 function PageTransition({ children }) {
   return (
@@ -23,6 +28,31 @@ function PageTransition({ children }) {
 
 export default function App() {
   const location = useLocation();
+  const isAdmin = location.pathname.startsWith("/admin");
+
+  // Admin layout — sem Navbar, Footer, CursorGlow ou WhatsApp
+  if (isAdmin) {
+    return (
+      <Routes>
+        <Route path="/admin/login" element={<Login />} />
+        <Route
+          path="/admin/projetos"
+          element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
+        />
+        <Route
+          path="/admin/projetos/novo"
+          element={<ProtectedRoute><ProjectEdit /></ProtectedRoute>}
+        />
+        <Route
+          path="/admin/projetos/:id/editar"
+          element={<ProtectedRoute><ProjectEdit /></ProtectedRoute>}
+        />
+        <Route path="/admin" element={<Navigate to="/admin/projetos" replace />} />
+      </Routes>
+    );
+  }
+
+  // Layout público
   return (
     <div className="flex min-h-screen flex-col">
       <CursorGlow />
@@ -38,6 +68,7 @@ export default function App() {
         </AnimatePresence>
       </main>
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 }

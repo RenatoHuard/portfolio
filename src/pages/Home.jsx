@@ -5,7 +5,7 @@ import TerminalLine from "../components/TerminalLine";
 import ScrollTyping from "../components/ScrollTyping";
 import Reveal from "../components/Reveal";
 import TiltCard from "../components/TiltCard";
-import { projects } from "../data/projects";
+import { useProjects } from "../hooks/useProjects";
 import { supabase } from "../lib/supabase";
 
 const stats = [
@@ -73,6 +73,8 @@ function StatCard({ label, value, inView, delay }) {
 }
 
 export default function Home() {
+  const { projects } = useProjects();
+
   // Hero parallax
   const heroMouseX = useMotionValue(0.5);
   const heroMouseY = useMotionValue(0.5);

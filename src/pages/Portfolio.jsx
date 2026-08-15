@@ -1,8 +1,10 @@
-import { projects } from "../data/projects";
 import ProjectCard from "../components/ProjectCard";
 import ScrollTyping from "../components/ScrollTyping";
+import { useProjects } from "../hooks/useProjects";
 
 export default function Portfolio() {
+  const { projects, loading } = useProjects();
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-20">
       <p className="font-mono text-xs uppercase tracking-widest text-signal">SYS.PROJECTS // Portfolio</p>
@@ -14,11 +16,19 @@ export default function Portfolio() {
         stack e o problema que o projeto resolve.
       </p>
 
-      <div className="mt-12 grid gap-6 md:grid-cols-2">
-        {projects.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
-        ))}
-      </div>
+      {loading ? (
+        <div className="mt-12 grid gap-6 md:grid-cols-2">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-56 animate-pulse border border-line bg-surface" />
+          ))}
+        </div>
+      ) : (
+        <div className="mt-12 grid gap-6 md:grid-cols-2">
+          {projects.map((project) => (
+            <ProjectCard key={project.slug} project={project} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
