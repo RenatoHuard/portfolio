@@ -1,6 +1,6 @@
 // Substitua pelo seu número com código do país (sem +, traços ou espaços)
 // Exemplo: "5561999999999" = Brasil (55) + DDD 61 + número
-const WHATSAPP_NUMBER = "5561999999999";
+const WHATSAPP_NUMBER = "5513982126596";
 const WHATSAPP_MSG = encodeURIComponent("Olá! Vi o seu portfolio e gostaria de conversar.");
 
 export default function WhatsAppButton() {

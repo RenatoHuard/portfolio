@@ -52,13 +52,16 @@ create policy "projects_public_read"
 create policy "screenshots_public_read"
   on public.project_screenshots for select to anon, authenticated using (true);
 
--- Escrita apenas para usuários autenticados (só você tem as credenciais)
-create policy "projects_auth_write"
-  on public.projects for all to authenticated using (true) with check (true);
+-- Escrita restrita ao e-mail do admin (bloqueia usuários do CrushDex)
+create policy "projects_admin_write"
+  on public.projects for all to authenticated
+  using     (auth.email() = 'renato.jhs@gmail.com')
+  with check (auth.email() = 'renato.jhs@gmail.com');
 
-create policy "screenshots_auth_write"
+create policy "screenshots_admin_write"
   on public.project_screenshots for all to authenticated
-  using (true) with check (true);
+  using     (auth.email() = 'renato.jhs@gmail.com')
+  with check (auth.email() = 'renato.jhs@gmail.com');
 
 -- Contato: qualquer um pode inserir, ninguém anônimo pode ler
 create policy "contact_public_insert"

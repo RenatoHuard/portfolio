@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 
+const ADMIN_EMAIL = "renato.jhs@gmail.com";
+
 export default function ProtectedRoute({ children }) {
   const [session, setSession] = useState(undefined); // undefined = still checking
 
@@ -21,6 +23,10 @@ export default function ProtectedRoute({ children }) {
     );
   }
 
-  if (!session) return <Navigate to="/admin/login" replace />;
+  // Usuários do CrushDex (mesmo projeto Supabase) são bloqueados aqui
+  if (!session || session.user?.email !== ADMIN_EMAIL) {
+    return <Navigate to="/admin/login" replace />;
+  }
+
   return children;
 }
