@@ -6,6 +6,7 @@ import ScrollTyping from "../components/ScrollTyping";
 import Reveal from "../components/Reveal";
 import TiltCard from "../components/TiltCard";
 import { projects } from "../data/projects";
+import { supabase } from "../lib/supabase";
 
 const stats = [
   { label: "Anos como dev / automação", value: "5+" },
@@ -259,6 +260,154 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* CONTATO */}
+      <ContactSection />
     </div>
+  );
+}
+
+function ContactSection() {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState("idle"); // idle | sending | sent | error
+
+  const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setStatus("sending");
+    const { error } = await supabase.from("contact_messages").insert({
+      name: form.name.trim(),
+      email: form.email.trim(),
+      message: form.message.trim(),
+    });
+    if (error) {
+      setStatus("error");
+    } else {
+      setStatus("sent");
+      setForm({ name: "", email: "", message: "" });
+    }
+  }
+
+  return (
+    <section id="contato" className="border-t border-line">
+      <div className="mx-auto max-w-6xl px-6 py-24">
+        <Reveal>
+          <p className="font-mono text-xs uppercase tracking-widest text-signal">SYS.CONTACT</p>
+          <h2 className="mt-3 font-display text-3xl font-semibold text-text md:text-4xl">
+            Vamos conversar.
+          </h2>
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
+            Tem um projeto em mente, uma vaga para discutir ou só quer trocar uma ideia? Me
+            manda uma mensagem.
+          </p>
+        </Reveal>
+
+        <div className="mt-12 grid gap-12 md:grid-cols-2">
+          {/* Links diretos */}
+          <Reveal delay={0.1}>
+            <ul className="space-y-5">
+              {[
+                { label: "E-mail", value: "renato.jhs@gmail.com", href: "mailto:renato.jhs@gmail.com" },
+                { label: "GitHub", value: "github.com/RenatoHuard", href: "https://github.com/RenatoHuard" },
+                { label: "LinkedIn", value: "linkedin.com/in/renatohuard", href: "https://linkedin.com/in/renatohuard" },
+              ].map((link) => (
+                <li key={link.label} className="border-b border-line pb-5">
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
+                    {link.label}
+                  </p>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-1 block text-sm text-text transition-colors hover:text-signal"
+                  >
+                    {link.value} ↗
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+
+          {/* Formulário */}
+          <Reveal delay={0.18}>
+            {status === "sent" ? (
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex h-full flex-col items-start justify-center gap-3 border border-signal/30 bg-signal/5 p-8"
+              >
+                <span className="font-mono text-xs uppercase tracking-widest text-signal">
+                  MSG.SENT ✓
+                </span>
+                <p className="text-sm leading-relaxed text-muted">
+                  Mensagem recebida. Retorno em breve.
+                </p>
+                <button
+                  onClick={() => setStatus("idle")}
+                  className="mt-2 font-mono text-xs uppercase tracking-widest text-muted underline underline-offset-4 hover:text-signal"
+                >
+                  Enviar outra
+                </button>
+              </motion.div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {[
+                  { id: "name", label: "Nome", type: "text", placeholder: "Seu nome" },
+                  { id: "email", label: "E-mail", type: "email", placeholder: "seu@email.com" },
+                ].map(({ id, label, type, placeholder }) => (
+                  <div key={id}>
+                    <label
+                      htmlFor={id}
+                      className="block font-mono text-[10px] uppercase tracking-widest text-muted"
+                    >
+                      {label}
+                    </label>
+                    <input
+                      id={id}
+                      type={type}
+                      required
+                      value={form[id]}
+                      onChange={set(id)}
+                      placeholder={placeholder}
+                      className="mt-1 w-full border border-line bg-surface px-4 py-3 text-sm text-text placeholder:text-muted/40 focus:border-signal focus:outline-none"
+                    />
+                  </div>
+                ))}
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="block font-mono text-[10px] uppercase tracking-widest text-muted"
+                  >
+                    Mensagem
+                  </label>
+                  <textarea
+                    id="message"
+                    required
+                    rows={5}
+                    value={form.message}
+                    onChange={set("message")}
+                    placeholder="Descreva seu projeto ou proposta..."
+                    className="mt-1 w-full resize-none border border-line bg-surface px-4 py-3 text-sm text-text placeholder:text-muted/40 focus:border-signal focus:outline-none"
+                  />
+                </div>
+                {status === "error" && (
+                  <p className="font-mono text-[11px] uppercase tracking-widest text-red-400">
+                    Erro ao enviar. Tente novamente ou use o e-mail diretamente.
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  disabled={status === "sending"}
+                  className="w-full border border-signal bg-signal py-3 font-mono text-xs uppercase tracking-widest text-bg transition-opacity hover:opacity-90 disabled:opacity-50"
+                >
+                  {status === "sending" ? "Enviando..." : "Enviar mensagem"}
+                </button>
+              </form>
+            )}
+          </Reveal>
+        </div>
+      </div>
+    </section>
   );
 }
