@@ -15,7 +15,7 @@ export default function Footer() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a
-                href="https://api.whatsapp.com/send?phone=SEU_NUMERO"
+                href="https://wa.me/5513982126596"
                 target="_blank"
                 rel="noreferrer"
                 className="border border-signal px-5 py-2.5 font-mono text-xs uppercase tracking-widest text-signal transition-colors hover:bg-signal hover:text-bg"
@@ -53,9 +53,17 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <p className="mt-12 font-mono text-[11px] text-muted">
-          © {year} Renato Huard. Todos os direitos reservados.
-        </p>
+        <div className="mt-12 flex items-center justify-between">
+          <p className="font-mono text-[11px] text-muted">
+            © {year} Renato Huard. Todos os direitos reservados.
+          </p>
+          <a
+            href="/admin/login"
+            className="font-mono text-[10px] uppercase tracking-widest text-muted/30 hover:text-muted"
+          >
+            login
+          </a>
+        </div>
       </div>
     </footer>
   );
