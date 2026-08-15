@@ -7,6 +7,7 @@ export default function CursorGlow() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
 
     const onMove = (e) => {
       pos.current = { x: e.clientX, y: e.clientY };

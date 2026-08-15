@@ -67,6 +67,32 @@ create policy "screenshots_admin_write"
 create policy "contact_public_insert"
   on public.contact_messages for insert to anon, authenticated with check (true);
 
+-- ── SITE SETTINGS ────────────────────────────────────────────
+create table if not exists public.site_settings (
+  key   text primary key,
+  value text not null default ''
+);
+
+alter table public.site_settings enable row level security;
+
+create policy "settings_public_read"
+  on public.site_settings for select to anon, authenticated using (true);
+
+create policy "settings_admin_write"
+  on public.site_settings for all to authenticated
+  using     (auth.email() = 'admin@renatohuard.com.br')
+  with check (auth.email() = 'admin@renatohuard.com.br');
+
+-- Valores padrão
+insert into public.site_settings (key, value) values
+  ('contact_email',    'renato.jhs@gmail.com'),
+  ('whatsapp_number',  '5513982126596'),
+  ('whatsapp_message', 'Olá! Vi o seu portfolio e gostaria de conversar.'),
+  ('github_url',       'https://github.com/RenatoHuard'),
+  ('linkedin_url',     'https://www.linkedin.com/in/renato-huard/'),
+  ('instagram_url',    'https://www.instagram.com/renatohuard')
+on conflict (key) do nothing;
+
 -- ── STORAGE BUCKET ────────────────────────────────────────────
 -- Criar manualmente no Dashboard > Storage > New bucket
 --   Nome: screenshots

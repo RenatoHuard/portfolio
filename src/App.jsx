@@ -11,6 +11,7 @@ import CrushDex from "./pages/CrushDex";
 import Login from "./pages/admin/Login";
 import Dashboard from "./pages/admin/Dashboard";
 import ProjectEdit from "./pages/admin/ProjectEdit";
+import Settings from "./pages/admin/Settings";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 
 function PageTransition({ children }) {
@@ -46,6 +47,10 @@ export default function App() {
         <Route
           path="/admin/projetos/:id/editar"
           element={<ProtectedRoute><ProjectEdit /></ProtectedRoute>}
+        />
+        <Route
+          path="/admin/configuracoes"
+          element={<ProtectedRoute><Settings /></ProtectedRoute>}
         />
         <Route path="/admin" element={<Navigate to="/admin/projetos" replace />} />
       </Routes>
