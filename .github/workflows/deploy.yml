@@ -30,8 +30,8 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp
+          protocol: ftps
           port: 21
           local-dir: ./dist/
-          server-dir: /home/u932442328/domains/renatohuard.com.br/public_html/
+          server-dir: /public_html/
           dangerous-clean-slate: false
