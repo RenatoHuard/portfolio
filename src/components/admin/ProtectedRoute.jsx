@@ -2,14 +2,20 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 
-const ADMIN_EMAIL = "renato.jhs@gmail.com";
+const ADMIN_EMAIL = "admin@renatohuard.com.br";
 
 export default function ProtectedRoute({ children }) {
-  const [session, setSession] = useState(undefined); // undefined = still checking
+  const [session, setSession] = useState(undefined); // undefined = verificando
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setSession(data.session));
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, s) => setSession(s));
+    // getSession também processa o hash do OAuth callback automaticamente
+    supabase.auth.getSession().then(({ data }) => setSession(data.session ?? null));
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, s) => {
+      // SIGNED_IN dispara após retorno do Google OAuth
+      setSession(s ?? null);
+    });
+
     return () => subscription.unsubscribe();
   }, []);
 
@@ -23,7 +29,7 @@ export default function ProtectedRoute({ children }) {
     );
   }
 
-  // Usuários do CrushDex (mesmo projeto Supabase) são bloqueados aqui
+  // Bloqueia qualquer conta que não seja o admin (ex: usuários do CrushDex)
   if (!session || session.user?.email !== ADMIN_EMAIL) {
     return <Navigate to="/admin/login" replace />;
   }

@@ -55,13 +55,13 @@ create policy "screenshots_public_read"
 -- Escrita restrita ao e-mail do admin (bloqueia usuários do CrushDex)
 create policy "projects_admin_write"
   on public.projects for all to authenticated
-  using     (auth.email() = 'renato.jhs@gmail.com')
-  with check (auth.email() = 'renato.jhs@gmail.com');
+  using     (auth.email() = 'admin@renatohuard.com.br')
+  with check (auth.email() = 'admin@renatohuard.com.br');
 
 create policy "screenshots_admin_write"
   on public.project_screenshots for all to authenticated
-  using     (auth.email() = 'renato.jhs@gmail.com')
-  with check (auth.email() = 'renato.jhs@gmail.com');
+  using     (auth.email() = 'admin@renatohuard.com.br')
+  with check (auth.email() = 'admin@renatohuard.com.br');
 
 -- Contato: qualquer um pode inserir, ninguém anônimo pode ler
 create policy "contact_public_insert"

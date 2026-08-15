@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 
+const ADMIN_EMAIL = "admin@renatohuard.com.br";
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,7 +13,9 @@ export default function Login() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate("/admin/projetos", { replace: true });
+      if (data.session?.user?.email === ADMIN_EMAIL) {
+        navigate("/admin/projetos", { replace: true });
+      }
     });
   }, [navigate]);
 
@@ -21,7 +25,7 @@ export default function Login() {
     setError(null);
     const { error: err } = await supabase.auth.signInWithPassword({ email, password });
     if (err) {
-      setError("Credenciais inválidas.");
+      setError("E-mail ou senha incorretos.");
       setLoading(false);
     } else {
       navigate("/admin/projetos", { replace: true });
