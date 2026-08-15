@@ -6,6 +6,7 @@ import ScrollTyping from "../components/ScrollTyping";
 import Reveal from "../components/Reveal";
 import TiltCard from "../components/TiltCard";
 import { useProjects } from "../hooks/useProjects";
+import { useSettings } from "../hooks/useSettings";
 import { supabase } from "../lib/supabase";
 
 const stats = [
@@ -74,6 +75,7 @@ function StatCard({ label, value, inView, delay }) {
 
 export default function Home() {
   const { projects } = useProjects();
+  const { profile_photo_url } = useSettings();
 
   // Hero parallax
   const heroMouseX = useMotionValue(0.5);
@@ -182,24 +184,47 @@ export default function Home() {
       {/* SOBRE */}
       <section id="sobre" className="border-b border-line">
         <div className="mx-auto max-w-6xl px-6 py-24">
-          <Reveal>
-            <p className="font-mono text-xs uppercase tracking-widest text-signal">
-              SYS.PROFILE // Quem sou eu
-            </p>
-            <h2 className="mt-3 max-w-2xl font-display text-3xl font-semibold text-text md:text-4xl">
-              <ScrollTyping text="Perfil analítico, formado em Ciência da Computação, construído em cima da experiência." speed={22} />
-            </h2>
-            <p className="mt-6 max-w-3xl text-base leading-relaxed text-muted">
-              Hoje meu foco é desenvolvimento full-stack: projeto e construo sistemas de
-              gestão do zero, cuido da arquitetura de dados no Supabase e implemento
-              automações que tiram tarefas repetitivas do caminho de quem usa o sistema.
-              Isso vem de uma base pouco comum — 9 anos em multinacionais em São Paulo como
-              analista, 4 anos como Cabo do Exército Brasileiro e 5 anos como gestor de
-              tráfego pago, lançador e co-produtor de produtos digitais. Essa mistura é o
-              que me faz pensar em produto e em dado de aquisição com a mesma naturalidade
-              com que penso em schema de banco.
-            </p>
-          </Reveal>
+          <div className="flex flex-col gap-12 md:flex-row md:items-start md:gap-16">
+            <div className="flex-1">
+              <Reveal>
+                <p className="font-mono text-xs uppercase tracking-widest text-signal">
+                  SYS.PROFILE // Quem sou eu
+                </p>
+                <h2 className="mt-3 max-w-2xl font-display text-3xl font-semibold text-text md:text-4xl">
+                  <ScrollTyping text="Perfil analítico, formado em Ciência da Computação, construído em cima da experiência." speed={22} />
+                </h2>
+                <p className="mt-6 max-w-3xl text-base leading-relaxed text-muted">
+                  Hoje meu foco é desenvolvimento full-stack: projeto e construo sistemas de
+                  gestão do zero, cuido da arquitetura de dados no Supabase e implemento
+                  automações que tiram tarefas repetitivas do caminho de quem usa o sistema.
+                  Isso vem de uma base pouco comum — 9 anos em multinacionais em São Paulo como
+                  analista, 4 anos como Cabo do Exército Brasileiro e 5 anos como gestor de
+                  tráfego pago, lançador e co-produtor de produtos digitais. Essa mistura é o
+                  que me faz pensar em produto e em dado de aquisição com a mesma naturalidade
+                  com que penso em schema de banco.
+                </p>
+              </Reveal>
+            </div>
+            {profile_photo_url && (
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="relative w-full max-w-[260px] flex-shrink-0 self-start md:max-w-[220px] lg:max-w-[260px]"
+              >
+                <div className="hud-corners border border-line overflow-hidden">
+                  <div className="corner-tl" />
+                  <div className="corner-br" />
+                  <img
+                    src={profile_photo_url}
+                    alt="Renato Huard"
+                    className="aspect-[3/4] w-full object-cover"
+                  />
+                </div>
+              </motion.div>
+            )}
+          </div>
 
           <div className="mt-14 grid gap-px overflow-hidden border border-line bg-line md:grid-cols-3">
             {skills.map((s, i) => (

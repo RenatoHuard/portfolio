@@ -8,6 +8,9 @@ export const DEFAULTS = {
   github_url: "https://github.com/RenatoHuard",
   linkedin_url: "https://www.linkedin.com/in/renato-huard/",
   instagram_url: "https://www.instagram.com/renatohuard",
+  crushdex_apk_url: "",
+  profile_photo_url: "",
+  brand_logo_url: "",
 };
 
 // Cache de módulo — uma única query por page load

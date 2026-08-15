@@ -2,7 +2,7 @@ import { useSettings } from "../hooks/useSettings";
 
 export default function Footer() {
   const year = new Date().getFullYear();
-  const { contact_email, whatsapp_number, github_url, linkedin_url, instagram_url } = useSettings();
+  const { contact_email, whatsapp_number, github_url, linkedin_url, instagram_url, brand_logo_url } = useSettings();
 
   return (
     <footer id="contato" className="border-t border-line">
@@ -66,9 +66,14 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex items-center justify-between">
-          <p className="font-mono text-[11px] text-muted">
-            © {year} Renato Huard. Todos os direitos reservados.
-          </p>
+          <div className="flex items-center gap-4">
+            {brand_logo_url && (
+              <img src={brand_logo_url} alt="Renato Huard" className="h-8 w-auto opacity-70" />
+            )}
+            <p className="font-mono text-[11px] text-muted">
+              © {year} Renato Huard. Todos os direitos reservados.
+            </p>
+          </div>
           <a
             href="/admin/login"
             className="font-mono text-[10px] uppercase tracking-widest text-muted/30 hover:text-muted"
@@ -76,6 +81,7 @@ export default function Footer() {
             login
           </a>
         </div>
+
       </div>
     </footer>
   );

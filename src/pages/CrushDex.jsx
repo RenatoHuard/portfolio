@@ -1,6 +1,10 @@
 import { crushdex } from "../data/projects";
+import { useSettings } from "../hooks/useSettings";
 
 export default function CrushDex() {
+  const { crushdex_apk_url } = useSettings();
+  const apkUrl = crushdex_apk_url || null;
+
   return (
     <div className="mx-auto max-w-4xl px-6 py-20">
       <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-muted">
@@ -37,18 +41,33 @@ export default function CrushDex() {
           Baixar CrushDex (Android)
         </h2>
         <p className="mt-2 max-w-md text-sm text-muted">
-          O link sempre aponta para a versão mais recente do APK publicada no
-          armazenamento do projeto.
+          O link sempre aponta para a versão mais recente publicada.
         </p>
-        <a
-          href={crushdex.apkUrl}
-          className="mt-6 inline-flex items-center gap-2 border border-signal bg-signal px-6 py-3 font-mono text-xs uppercase tracking-widest text-bg transition-opacity hover:opacity-90"
-        >
-          Baixar APK <span aria-hidden>↓</span>
-        </a>
-        <p className="mt-3 font-mono text-[11px] text-muted">
-          Requer permissão para instalar apps de fontes desconhecidas no Android.
-        </p>
+
+        {apkUrl ? (
+          <>
+            <a
+              href={apkUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-6 inline-flex items-center gap-2 border border-signal bg-signal px-6 py-3 font-mono text-xs uppercase tracking-widest text-bg transition-opacity hover:opacity-90"
+            >
+              Baixar APK <span aria-hidden>↓</span>
+            </a>
+            <p className="mt-3 font-mono text-[11px] text-muted">
+              Requer permissão para instalar apps de fontes desconhecidas no Android.
+            </p>
+          </>
+        ) : (
+          <div className="mt-6">
+            <span className="inline-block cursor-not-allowed border border-line px-6 py-3 font-mono text-xs uppercase tracking-widest text-muted/50">
+              Em breve ↓
+            </span>
+            <p className="mt-3 font-mono text-[11px] text-muted">
+              O APK ainda não foi publicado. Volte em breve.
+            </p>
+          </div>
+        )}
       </div>
 
       {crushdex.repo && (
