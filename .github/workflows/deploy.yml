@@ -33,5 +33,5 @@ jobs:
           protocol: ftps
           port: 21
           local-dir: ./dist/
-          server-dir: /home/u932442328/domains/renatohuard.com.br/public_html/
+          server-dir: /
           dangerous-clean-slate: false
