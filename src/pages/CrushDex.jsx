@@ -2,8 +2,9 @@ import { crushdex } from "../data/projects";
 import { useSettings } from "../hooks/useSettings";
 
 export default function CrushDex() {
-  const { crushdex_apk_url } = useSettings();
+  const { crushdex_apk_url, crushdex_web_url } = useSettings();
   const apkUrl = crushdex_apk_url || null;
+  const webUrl = crushdex_web_url || null;
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-20">
@@ -32,6 +33,28 @@ export default function CrushDex() {
           ))}
         </ul>
       </div>
+
+      {webUrl && (
+        <div className="mt-12 hud-corners border border-violet bg-surface p-8">
+          <div className="corner-tl" />
+          <div className="corner-br" />
+          <p className="font-mono text-xs uppercase tracking-widest text-violet">Versão Web</p>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-text">
+            Abrir no navegador
+          </h2>
+          <p className="mt-2 max-w-md text-sm text-muted">
+            Experimente o CrushDex direto pelo navegador, sem precisar instalar nada.
+          </p>
+          <a
+            href={webUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-6 inline-flex items-center gap-2 border border-violet bg-violet px-6 py-3 font-mono text-xs uppercase tracking-widest text-bg transition-opacity hover:opacity-90"
+          >
+            Abrir Web App <span aria-hidden>↗</span>
+          </a>
+        </div>
+      )}
 
       <div className="mt-12 hud-corners border border-line bg-surface p-8">
         <div className="corner-tl" />

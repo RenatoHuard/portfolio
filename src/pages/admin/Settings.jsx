@@ -21,6 +21,12 @@ export default function Settings() {
   const [done, setDone]     = useState(false);
   const [error, setError]   = useState(null);
 
+  // Web App URL
+  const [webUrl, setWebUrl]           = useState("");
+  const [webUrlInput, setWebUrlInput] = useState("");
+  const [webSaving, setWebSaving]     = useState(false);
+  const [webDone, setWebDone]         = useState(false);
+
   // APK
   const [apkUrl, setApkUrl]         = useState("");
   const [apkUrlInput, setApkUrlInput] = useState("");
@@ -55,6 +61,9 @@ export default function Settings() {
         const url = loaded.crushdex_apk_url || "";
         setApkUrl(url);
         setApkUrlInput(url);
+        const wUrl = loaded.crushdex_web_url || "";
+        setWebUrl(wUrl);
+        setWebUrlInput(wUrl);
         setPhotoUrl(loaded.profile_photo_url || "");
         setLogoUrl(loaded.brand_logo_url || "");
       });
@@ -78,6 +87,17 @@ export default function Settings() {
     await supabase
       .from("site_settings")
       .upsert({ key, value }, { onConflict: "key" });
+  }
+
+  // ── WEB APP URL ──────────────────────────────────────────────
+  async function handleWebUrlSave() {
+    const url = webUrlInput.trim();
+    setWebSaving(true);
+    await saveSetting("crushdex_web_url", url);
+    setWebUrl(url);
+    setWebSaving(false);
+    setWebDone(true);
+    setTimeout(() => setWebDone(false), 2500);
   }
 
   // ── APK ──────────────────────────────────────────────────────
@@ -242,6 +262,54 @@ export default function Settings() {
             </button>
             {logoError && <p className="mt-2 font-mono text-[11px] text-red-400">{logoError}</p>}
             {logoDone  && <p className="mt-2 font-mono text-[11px] uppercase tracking-widest text-signal">✓ Logo atualizado</p>}
+          </div>
+        </div>
+      </div>
+
+      {/* ── CRUSHDEX WEB APP ── */}
+      <div className="mt-10 border border-line p-6">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-signal">CrushDex — Versão Web</p>
+        <p className="mt-1 text-sm text-muted">
+          URL da versão web do app. Quando configurada, um botão "Abrir Web App" aparece na página do CrushDex.
+        </p>
+
+        <div className="mt-4 font-mono text-xs">
+          <span className="text-muted uppercase tracking-widest">Status: </span>
+          {webUrl ? (
+            <>
+              <span className="text-signal">✓ URL configurada — </span>
+              <a
+                href={webUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="underline text-muted hover:text-signal"
+              >
+                Testar link ↗
+              </a>
+            </>
+          ) : (
+            <span className="text-muted/50">Nenhuma URL configurada</span>
+          )}
+        </div>
+
+        <div className="mt-4">
+          <input
+            type="url"
+            value={webUrlInput}
+            onChange={(e) => setWebUrlInput(e.target.value)}
+            placeholder="https://renatohuard.com.br/crushdex/app/"
+            className="w-full border border-line bg-surface px-3 py-2 text-xs text-text placeholder:text-muted/40 focus:border-signal focus:outline-none"
+          />
+          <div className="mt-2 flex items-center gap-4">
+            <button
+              type="button"
+              onClick={handleWebUrlSave}
+              disabled={webSaving || webUrlInput === webUrl}
+              className="border border-line py-2.5 px-6 font-mono text-xs uppercase tracking-widest text-muted hover:border-signal hover:text-signal disabled:opacity-30"
+            >
+              {webSaving ? "Salvando..." : "Salvar URL"}
+            </button>
+            {webDone && <span className="font-mono text-[11px] uppercase tracking-widest text-signal">✓ URL atualizada</span>}
           </div>
         </div>
       </div>
